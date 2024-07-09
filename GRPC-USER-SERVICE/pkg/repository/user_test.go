@@ -28,14 +28,14 @@ func Test_GetUserByID(t *testing.T) {
 				mockSQL.ExpectQuery(`SELECT id, fname, city, phone, height, married FROM users WHERE id=\$1`).
 					WithArgs(1).
 					WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).
-						AddRow(1, "akhil", "bangalore", "+919087678564", 5.9, true))
+						AddRow(1, "akhil", "bangalore", "9087678564", 157.9, true))
 			},
 			want: models.Users{
 				ID:      1,
 				Fname:   "akhil",
 				City:    "bangalore",
-				Phone:   "+919087678564",
-				Height:  5.9,
+				Phone:   "9087678564",
+				Height:  157.9,
 				Married: true,
 			},
 			wantErr: nil,
@@ -86,27 +86,27 @@ func Test_GetUsersByIDs(t *testing.T) {
 				mockSQL.ExpectQuery(`SELECT id, fname, city, phone, height, married FROM users WHERE id=\$1`).
 					WithArgs(1).
 					WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).
-						AddRow(1, "akhil", "bangalore", "+919087678564", 5.9, true))
+						AddRow(1, "akhil", "bangalore", "9087678564", 165.9, true))
 				mockSQL.ExpectQuery(`SELECT id, fname, city, phone, height, married FROM users WHERE id=\$1`).
 					WithArgs(2).
 					WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).
-						AddRow(2, "rahul", "mumbai", "+919076543210", 5.8, false))
+						AddRow(2, "rahul", "mumbai", "9076543210", 157.8, false))
 			},
 			want: []models.Users{
 				{
 					ID:      1,
 					Fname:   "akhil",
 					City:    "bangalore",
-					Phone:   "+919087678564",
-					Height:  5.9,
+					Phone:   "9087678564",
+					Height:  165.9,
 					Married: true,
 				},
 				{
 					ID:      2,
 					Fname:   "rahul",
 					City:    "mumbai",
-					Phone:   "+919076543210",
-					Height:  5.8,
+					Phone:   "9076543210",
+					Height:  157.8,
 					Married: false,
 				},
 			},
@@ -119,7 +119,7 @@ func Test_GetUsersByIDs(t *testing.T) {
 				mockSQL.ExpectQuery(`SELECT id, fname, city, phone, height, married FROM users WHERE id=\$1`).
 					WithArgs(1).
 					WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).
-						AddRow(1, "akhil", "bangalore", "+919087678564", 5.9, true))
+						AddRow(1, "akhil", "bangalore", "9087678564", 157.9, true))
 				mockSQL.ExpectQuery(`SELECT id, fname, city, phone, height, married FROM users WHERE id=\$1`).
 					WithArgs(3).
 					WillReturnError(errors.New("error"))
@@ -129,8 +129,8 @@ func Test_GetUsersByIDs(t *testing.T) {
 					ID:      1,
 					Fname:   "akhil",
 					City:    "bangalore",
-					Phone:   "+919087678564",
-					Height:  5.9,
+					Phone:   "9087678564",
+					Height:  157.9,
 					Married: true,
 				},
 			},
@@ -169,7 +169,7 @@ func Test_SearchCity(t *testing.T) {
 			args: "City",
 			stub: func(mockSQL sqlmock.Sqlmock) {
 				expectQuery := `SELECT id, fname, city, phone, height, married FROM users WHERE city ILIKE '%' || \$1 || '%'`
-				mockSQL.ExpectQuery(expectQuery).WithArgs("City").WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 5.6, true))
+				mockSQL.ExpectQuery(expectQuery).WithArgs("City").WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 157.6, true))
 			},
 			want: []models.Users{
 				{
@@ -177,7 +177,7 @@ func Test_SearchCity(t *testing.T) {
 					Fname:   "Akhil",
 					City:    "City",
 					Phone:   "1234567890",
-					Height:  5.6,
+					Height:  157.6,
 					Married: true,
 				},
 			},
@@ -226,7 +226,7 @@ func Test_SearchPhone(t *testing.T) {
 			args: "1234567890",
 			stub: func(mockSQL sqlmock.Sqlmock) {
 				expectQuery := `SELECT id, fname, city, phone, height, married FROM users WHERE phone=\$1`
-				mockSQL.ExpectQuery(expectQuery).WithArgs("1234567890").WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 5.6, true))
+				mockSQL.ExpectQuery(expectQuery).WithArgs("1234567890").WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 157.6, true))
 			},
 			want: []models.Users{
 				{
@@ -234,7 +234,7 @@ func Test_SearchPhone(t *testing.T) {
 					Fname:   "Akhil",
 					City:    "City",
 					Phone:   "1234567890",
-					Height:  5.6,
+					Height:  157.6,
 					Married: true,
 				},
 			},
@@ -283,7 +283,7 @@ func Test_SearchMarried(t *testing.T) {
 			args: true,
 			stub: func(mockSQL sqlmock.Sqlmock) {
 				expectQuery := `SELECT id, fname, city, phone, height, married FROM users WHERE married=\$1`
-				mockSQL.ExpectQuery(expectQuery).WithArgs(true).WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 5.6, true))
+				mockSQL.ExpectQuery(expectQuery).WithArgs(true).WillReturnRows(sqlmock.NewRows([]string{"id", "fname", "city", "phone", "height", "married"}).AddRow(1, "Akhil", "City", "1234567890", 157.6, true))
 			},
 			want: []models.Users{
 				{
@@ -291,7 +291,7 @@ func Test_SearchMarried(t *testing.T) {
 					Fname:   "Akhil",
 					City:    "City",
 					Phone:   "1234567890",
-					Height:  5.6,
+					Height:  157.6,
 					Married: true,
 				},
 			},
@@ -340,7 +340,7 @@ func Test_AddUser(t *testing.T) {
 				Fname:   "Akhil",
 				City:    "City",
 				Phone:   "1234567890",
-				Height:  5.6,
+				Height:  157.6,
 				Married: true,
 			},
 			stub: func(mockSQL sqlmock.Sqlmock) {
@@ -355,7 +355,7 @@ func Test_AddUser(t *testing.T) {
 				Fname:   "Akhil",
 				City:    "City",
 				Phone:   "1234567890",
-				Height:  5.6,
+				Height:  157.6,
 				Married: true,
 			},
 			stub: func(mockSQL sqlmock.Sqlmock) {
@@ -394,7 +394,7 @@ func Test_CheckUserExistsByPhone(t *testing.T) {
 			name: "exists",
 			args: "1234567890",
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE phone = ?")
+				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE phone = $1")
 				mockSQL.ExpectQuery(expectQuery).WithArgs("1234567890").WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 			},
 			want: true,
@@ -403,7 +403,7 @@ func Test_CheckUserExistsByPhone(t *testing.T) {
 			name: "not exists",
 			args: "1234567890",
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE phone = ?")
+				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE phone = $1")
 				mockSQL.ExpectQuery(expectQuery).WithArgs("1234567890").WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(0))
 			},
 			want: false,
@@ -447,7 +447,7 @@ func Test_CheckUserAvailabilityWithUserID(t *testing.T) {
 			name: "exists",
 			args: 1,
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \$1`
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 			},
 			want: true,
@@ -456,7 +456,7 @@ func Test_CheckUserAvailabilityWithUserID(t *testing.T) {
 			name: "not exists",
 			args: 1,
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \$1`
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(0))
 			},
 			want: false,
@@ -465,7 +465,7 @@ func Test_CheckUserAvailabilityWithUserID(t *testing.T) {
 			name: "error",
 			args: 1,
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \$1`
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnError(errors.New("error"))
 			},
 			want: false,
@@ -500,7 +500,7 @@ func Test_CheckUserAvailabilityWithUserIDs(t *testing.T) {
 			name: "all exist",
 			args: []int64{1, 2, 3},
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE id = $1")
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 				mockSQL.ExpectQuery(expectQuery).WithArgs(2).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 				mockSQL.ExpectQuery(expectQuery).WithArgs(3).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
@@ -511,7 +511,7 @@ func Test_CheckUserAvailabilityWithUserIDs(t *testing.T) {
 			name: "some exist",
 			args: []int64{1, 2, 3},
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE id = $1")
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 				mockSQL.ExpectQuery(expectQuery).WithArgs(2).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
 				mockSQL.ExpectQuery(expectQuery).WithArgs(3).WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(0))
@@ -522,7 +522,7 @@ func Test_CheckUserAvailabilityWithUserIDs(t *testing.T) {
 			name: "error",
 			args: []int64{1, 2, 3},
 			stub: func(mockSQL sqlmock.Sqlmock) {
-				expectQuery := `SELECT count\(\*\) FROM users WHERE id = \?`
+				expectQuery := regexp.QuoteMeta("SELECT count(*) FROM users WHERE id = $1")
 				mockSQL.ExpectQuery(expectQuery).WithArgs(1).WillReturnError(errors.New("error"))
 			},
 			want: false,

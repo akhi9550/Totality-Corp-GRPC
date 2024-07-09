@@ -10,5 +10,5 @@ FROM gcr.io/distroless/static-debian11
 COPY --from=build-stage /grpc_api_gateway/build/api /
 COPY --from=build-stage /grpc_api_gateway/.env /
 EXPOSE 3000
-CMD ["/grpc-user-api"]
+CMD ["/api"]
 

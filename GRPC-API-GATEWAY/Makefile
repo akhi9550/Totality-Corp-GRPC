@@ -5,4 +5,4 @@ proto:
 	protoc --go_out=. --go-grpc_out=. ./pkg/pb/user.proto
 
 mock:
-	mockgen -source=pkg/pb/user.pb.go -destination=pkg/client/mocks/mock_userclient.go -package=mocks UserServiceClient
+	mockgen -source pkg\client\interface\user.go -destination pkg\client\mock\handler_mock.go -package mock

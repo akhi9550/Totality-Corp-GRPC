@@ -10,4 +10,4 @@ FROM gcr.io/distroless/static-debian11
 COPY --from=build-stage /grpc_user_svc/build/api /
 COPY --from=build-stage /grpc_user_svc/.env /
 EXPOSE 50051
-CMD ["/grpc-user-service"]
+CMD ["/api"]

@@ -20,7 +20,7 @@ func Test_GetUserByID(t *testing.T) {
 	testID := int64(1)
 
 	mockRepo.EXPECT().CheckUserAvailabilityWithUserID(testID).Return(true)
-	mockRepo.EXPECT().GetUserByID(testID).Return(models.Users{ID: testID, Fname: "Test User"}, nil)
+	mockRepo.EXPECT().GetUserByID(testID).Return(models.Users{ID: testID, Fname: "Test User", City: "Kannur", Phone: "0123456789", Height: 175.6, Married: true}, nil)
 
 	result, err := useCase.GetUserByID(testID)
 
@@ -91,15 +91,15 @@ func Test_SearchUsers(t *testing.T) {
 	}
 
 	mockRepo.EXPECT().SearchCity(testSearch.City).Return([]models.Users{
-		{ID: 1, Fname: "User1", City: testSearch.City},
+		{ID: 1, Fname: "User1", City: testSearch.City, Phone: "0123456789", Height: 175.6, Married: true},
 	}, nil).Times(1)
 
 	mockRepo.EXPECT().SearchPhone(testSearch.Phone).Return([]models.Users{
-		{ID: 1, Fname: "User1", Phone: testSearch.Phone},
+		{ID: 1, Fname: "User1", City: "Kannur", Phone: testSearch.Phone, Height: 175.6, Married: true},
 	}, nil).Times(1)
 
 	mockRepo.EXPECT().SearchMarried(testSearch.Married).Return([]models.Users{
-		{ID: 1, Fname: "User1", Married: testSearch.Married},
+		{ID: 1, Fname: "User1", City: "Kannur", Phone: testSearch.Phone, Height: 175.6, Married: testSearch.Married},
 	}, nil).Times(1)
 
 	result, err := useCase.SearchUsers(testSearch)

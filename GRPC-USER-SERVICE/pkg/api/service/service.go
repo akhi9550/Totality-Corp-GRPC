@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"grpc-user-service/pkg/pb"
 	interfaces "grpc-user-service/pkg/usecase/interface"
 	"grpc-user-service/pkg/utils/models"
@@ -21,7 +22,7 @@ func NewAuthServer(useCaseUser interfaces.UserUseCase) pb.UserServiceServer {
 func (s *UserSever) GetUserByID(ctx context.Context, req *pb.UserIDRequest) (*pb.UserResponse, error) {
 	results, err := s.userUseCase.GetUserByID(req.Id)
 	if err != nil {
-		return &pb.UserResponse{}, err
+		return &pb.UserResponse{}, errors.New("user not found")
 	}
 	return &pb.UserResponse{User: &pb.User{
 		Id:      results.ID,

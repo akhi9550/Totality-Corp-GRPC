@@ -88,13 +88,15 @@ func (ur *userRepository) CheckUserAvailabilityWithUserID(Id int64) bool {
 	return count > 0
 }
 
-func (ur *userRepository) CheckUserAvailabilityWithUserIDs(Ids []int64) bool {
-	var count int
-	for _, v := range Ids {
-		if err := ur.DB.Raw("SELECT count(*) FROM users WHERE id = ?", v).Error; err != nil {
+func (u *userRepository) CheckUserAvailabilityWithUserIDs(ids []int64) bool {
+	for _, id := range ids {
+		var count int
+		if err := u.DB.Raw("SELECT count(*) FROM users WHERE id = ?", id).Scan(&count).Error; err != nil {
 			return false
 		}
-		count++
+		if count == 0 {
+			return false
+		}
 	}
-	return count >= len(Ids)
+	return true
 }

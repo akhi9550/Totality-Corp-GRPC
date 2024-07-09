@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"fmt"
 	interfaces "grpc-user-service/pkg/repository/interface"
 	server "grpc-user-service/pkg/usecase/interface"
 	"grpc-user-service/pkg/utils/models"
@@ -43,7 +42,6 @@ func (u *userUseCase) GetUsersByIDs(ids []int64) ([]models.Users, error) {
 }
 
 func (u *userUseCase) SearchUsers(search models.SearchUser) ([]models.Users, error) {
-	fmt.Println("serarch", search.Married)
 	var result []models.Users
 	foundUsers := make(map[int64]bool)
 

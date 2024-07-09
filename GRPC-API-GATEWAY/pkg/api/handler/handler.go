@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	interfaces "grpc-user-api-gateway/pkg/client/interface"
 	"grpc-user-api-gateway/pkg/utils/helper"
 	"grpc-user-api-gateway/pkg/utils/models"
@@ -29,26 +28,29 @@ func (u *UserHandler) AddUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&AddUser); err != nil {
 		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errs)
+		return
 	}
 
 	pattern := `^\d{10}$`
 	regex := regexp.MustCompile(pattern)
 	value := regex.MatchString(AddUser.Phone)
 	if !value {
-		fmt.Printf("%s phone number is not valid", AddUser.Phone)
+		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, "Invalid phone number")
+		c.JSON(http.StatusBadRequest, errs)
 		return
 	}
 
 	err := validator.New().Struct(AddUser)
 	if err != nil {
-		errs := response.ClientResponse(http.StatusBadRequest, "Constraints not statisfied", nil, err.Error())
+		errs := response.ClientResponse(http.StatusBadRequest, "Constraints not satisfied", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errs)
 		return
 	}
+
 	err = u.GRPC_Client.AddUser(AddUser)
 	if err != nil {
-		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, err.Error())
-		c.JSON(http.StatusBadRequest, errs)
+		errs := response.ClientResponse(http.StatusInternalServerError, "Internal server error", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errs)
 		return
 	}
 	success := response.ClientResponse(http.StatusCreated, "User added successfully", nil, nil)
@@ -78,6 +80,8 @@ func (au *UserHandler) GetUsersByIDs(c *gin.Context) {
 	user := c.PostFormArray("user_ids")
 	users, err := helper.ConvertStringToArray(user)
 	if err != nil {
+		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errs)
 		return
 	}
 	Users, err := au.GRPC_Client.GetUsersByIDs(users)
@@ -95,8 +99,8 @@ func (au *UserHandler) SearchUsers(c *gin.Context) {
 	if err := c.ShouldBindJSON(&Search); err != nil {
 		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errs)
+		return
 	}
-
 	user, err := au.GRPC_Client.SearchUsers(Search)
 	if err != nil {
 		errs := response.ClientResponse(http.StatusBadRequest, "Details not in correct format", nil, err.Error())
