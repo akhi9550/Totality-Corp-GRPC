@@ -1,2 +1,3 @@
 GRPC-API-GATEWAY\.env
 GRPC-USER-SERVICE\.env
+.env

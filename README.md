@@ -28,3 +28,8 @@ Before running the project, you need to set the following environment variables 
 - `DB_PASSWORD`: Database password
 
 Make sure to provide the appropriate values for these environment variables to configure the project correctly.
+
+-**env**
+
+- `DB_USER`    : Database user
+- `DB_PASSWORD`: Database password
